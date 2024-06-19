@@ -114,7 +114,7 @@ func Transfer(c *gin.Context) {
 
 // @Summary ดูรายการ ประวัติการโอนเครดิตเข้า-ออก
 // @tags accounting
-// @Description ต้อง Login แล้วใช้ token Authorize ก่อนใช้งาน ใช้คำสั่ง curl ในการดึงข้อมูลได้เนื่องจากswaggerไม่รองรับget with body
+// @Description ต้อง Login แล้วใช้ token Authorize ก่อนใช้งาน ใช้คำสั่ง curl หรือ postman ในการดึงข้อมูลได้เนื่องจากหน้าเว็ปไม่รองรับ get with body
 // @Security ApiKeyAuth
 // @Param input body model.TransferCreditTransactionList true "-"
 // @Router /accounting/transfer-list [get]
