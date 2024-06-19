@@ -1,2 +1,1 @@
-สามารถสร้าง database จากการ Migrate Database
-\nlocalhost:8888/migrate
+สามารถสร้าง database จากการ Migrate Database -> localhost:8888/migrate
