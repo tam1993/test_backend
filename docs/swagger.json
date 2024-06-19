@@ -1,0 +1,289 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a sample server for a test backend.",
+        "title": "Test Backend API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8888",
+    "basePath": "/",
+    "paths": {
+        "/accounting/topup": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "ต้อง Login แล้วใช้ token Authorize ก่อนใช้งาน",
+                "tags": [
+                    "accounting"
+                ],
+                "summary": "เติมเงิน",
+                "parameters": [
+                    {
+                        "description": "-",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/transaction.TopupTransactionSwag"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/accounting/transfer": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "ต้อง Login แล้วใช้ token Authorize ก่อนใช้งาน",
+                "tags": [
+                    "accounting"
+                ],
+                "summary": "โอนเครดิต ระหว่าง User",
+                "parameters": [
+                    {
+                        "description": "-",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.TransferCreditTransaction"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/accounting/transfer-list": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "ต้อง Login แล้วใช้ token Authorize ก่อนใช้งาน ใช้คำสั่ง curl ในการดึงข้อมูลได้เนื่องจากswaggerไม่รองรับget with body",
+                "tags": [
+                    "accounting"
+                ],
+                "summary": "ดูรายการ ประวัติการโอนเครดิตเข้า-ออก",
+                "parameters": [
+                    {
+                        "description": "-",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.TransferCreditTransactionList"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/user/login": {
+            "post": {
+                "description": "Login",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "User Login",
+                "parameters": [
+                    {
+                        "description": "-",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserLogin"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/user/me": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "ต้อง Login แล้วใช้ token Authorize ก่อนใช้งาน",
+                "tags": [
+                    "user"
+                ],
+                "summary": "แสดงข้อมูล User ของตัวเอง",
+                "responses": {}
+            },
+            "patch": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "ต้อง Login แล้วใช้ token Authorize ก่อนใช้งาน",
+                "tags": [
+                    "user"
+                ],
+                "summary": "อัพเดตข้อมูล",
+                "parameters": [
+                    {
+                        "description": "-",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserUpdate"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/user/register": {
+            "post": {
+                "description": "Register",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "สมัครสมาชิก",
+                "parameters": [
+                    {
+                        "description": "-",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user.UserRegisterSwag"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        }
+    },
+    "definitions": {
+        "model.TransferCreditTransaction": {
+            "type": "object",
+            "required": [
+                "amount",
+                "bankaccountno"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "bankaccountno": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.TransferCreditTransactionList": {
+            "type": "object",
+            "required": [
+                "FromDate",
+                "ToDate"
+            ],
+            "properties": {
+                "FromDate": {
+                    "type": "string"
+                },
+                "ToDate": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserLogin": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserUpdate": {
+            "type": "object",
+            "required": [
+                "bankaccountno",
+                "firstname",
+                "lastname",
+                "password"
+            ],
+            "properties": {
+                "bankaccountno": {
+                    "type": "string"
+                },
+                "firstname": {
+                    "type": "string"
+                },
+                "lastname": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "transaction.TopupTransactionSwag": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "number"
+                }
+            }
+        },
+        "user.UserRegisterSwag": {
+            "type": "object",
+            "properties": {
+                "bankAccountNo": {
+                    "type": "string"
+                },
+                "firstname": {
+                    "type": "string"
+                },
+                "lastname": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}

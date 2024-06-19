@@ -16,6 +16,21 @@ import (
 // var saltPass = os.Getenv("PASSWORD_SALT")
 var saltPass = "saltttttP"
 
+type UserRegisterSwag struct {
+	Username  	string
+	Password	string
+	Firstname	string
+	Lastname 	string
+	BankAccountNo string
+}
+
+// @Summary สมัครสมาชิก
+// @tags user
+// @Description Register
+// @Accept json
+// @Produce json
+// @Param input body UserRegisterSwag true "-"
+// @Router /user/register [post]
 func Register(c *gin.Context) {
 	var json model.User
 	if err := c.ShouldBindJSON(&json); err != nil {
@@ -58,6 +73,13 @@ func Register(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "ok"})
 }
 
+// @Summary User Login
+// @tags user
+// @Description Login
+// @Accept json
+// @Produce json
+// @Param input body model.UserLogin true "-"
+// @Router /user/login [post]
 func Login(c *gin.Context) {
 	var json model.UserLogin
 	if err := c.ShouldBindJSON(&json); err != nil {
@@ -100,6 +122,11 @@ func Login(c *gin.Context) {
 	c.JSON(200, gin.H{"token": tokenString})
 }
 
+// @Summary แสดงข้อมูล User ของตัวเอง
+// @tags user
+// @Description ต้อง Login แล้วใช้ token Authorize ก่อนใช้งาน
+// @Security ApiKeyAuth
+// @Router /user/me [get]
 func Me(c *gin.Context) {
 	userId := int64(c.MustGet("userID").(float64))
 
@@ -112,6 +139,12 @@ func Me(c *gin.Context) {
 	c.JSON(200, users)
 }
 
+// @Summary อัพเดตข้อมูล
+// @tags user
+// @Description ต้อง Login แล้วใช้ token Authorize ก่อนใช้งาน
+// @Security ApiKeyAuth
+// @Param input body model.UserUpdate true "-"
+// @Router /user/me [patch]
 func UpdateUser(c *gin.Context) {
 	var json model.UserUpdate
 	if err := c.ShouldBindJSON(&json); err != nil {

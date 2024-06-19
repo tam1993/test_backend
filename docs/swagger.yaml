@@ -1,0 +1,188 @@
+basePath: /
+definitions:
+  model.TransferCreditTransaction:
+    properties:
+      amount:
+        type: number
+      bankaccountno:
+        type: string
+    required:
+    - amount
+    - bankaccountno
+    type: object
+  model.TransferCreditTransactionList:
+    properties:
+      FromDate:
+        type: string
+      ToDate:
+        type: string
+    required:
+    - FromDate
+    - ToDate
+    type: object
+  model.UserLogin:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  model.UserUpdate:
+    properties:
+      bankaccountno:
+        type: string
+      firstname:
+        type: string
+      lastname:
+        type: string
+      password:
+        type: string
+    required:
+    - bankaccountno
+    - firstname
+    - lastname
+    - password
+    type: object
+  transaction.TopupTransactionSwag:
+    properties:
+      amount:
+        type: number
+    type: object
+  user.UserRegisterSwag:
+    properties:
+      bankAccountNo:
+        type: string
+      firstname:
+        type: string
+      lastname:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+host: localhost:8888
+info:
+  contact: {}
+  description: This is a sample server for a test backend.
+  title: Test Backend API
+  version: "1.0"
+paths:
+  /accounting/topup:
+    post:
+      description: ต้อง Login แล้วใช้ token Authorize ก่อนใช้งาน
+      parameters:
+      - description: '-'
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/transaction.TopupTransactionSwag'
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: เติมเงิน
+      tags:
+      - accounting
+  /accounting/transfer:
+    post:
+      description: ต้อง Login แล้วใช้ token Authorize ก่อนใช้งาน
+      parameters:
+      - description: '-'
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/model.TransferCreditTransaction'
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: โอนเครดิต ระหว่าง User
+      tags:
+      - accounting
+  /accounting/transfer-list:
+    get:
+      description: ต้อง Login แล้วใช้ token Authorize ก่อนใช้งาน ใช้คำสั่ง curl ในการดึงข้อมูลได้เนื่องจากswaggerไม่รองรับget
+        with body
+      parameters:
+      - description: '-'
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/model.TransferCreditTransactionList'
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: ดูรายการ ประวัติการโอนเครดิตเข้า-ออก
+      tags:
+      - accounting
+  /user/login:
+    post:
+      consumes:
+      - application/json
+      description: Login
+      parameters:
+      - description: '-'
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserLogin'
+      produces:
+      - application/json
+      responses: {}
+      summary: User Login
+      tags:
+      - user
+  /user/me:
+    get:
+      description: ต้อง Login แล้วใช้ token Authorize ก่อนใช้งาน
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: แสดงข้อมูล User ของตัวเอง
+      tags:
+      - user
+    patch:
+      description: ต้อง Login แล้วใช้ token Authorize ก่อนใช้งาน
+      parameters:
+      - description: '-'
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserUpdate'
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: อัพเดตข้อมูล
+      tags:
+      - user
+  /user/register:
+    post:
+      consumes:
+      - application/json
+      description: Register
+      parameters:
+      - description: '-'
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/user.UserRegisterSwag'
+      produces:
+      - application/json
+      responses: {}
+      summary: สมัครสมาชิก
+      tags:
+      - user
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

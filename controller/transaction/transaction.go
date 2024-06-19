@@ -9,7 +9,15 @@ import (
 
 	"github.com/gin-gonic/gin"
 )
-
+type TopupTransactionSwag struct {
+	Amount       float32
+}
+// @Summary เติมเงิน
+// @tags accounting
+// @Description ต้อง Login แล้วใช้ token Authorize ก่อนใช้งาน
+// @Security ApiKeyAuth
+// @Param input body TopupTransactionSwag true "-"
+// @Router /accounting/topup [post]
 func Topup(c *gin.Context) {
 	userId := int64(c.MustGet("userID").(float64))
 	var json model.TopupTransaction
@@ -48,7 +56,12 @@ func Topup(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "ok"})
 }
 
-
+// @Summary โอนเครดิต ระหว่าง User
+// @tags accounting
+// @Description ต้อง Login แล้วใช้ token Authorize ก่อนใช้งาน
+// @Security ApiKeyAuth
+// @Param input body model.TransferCreditTransaction true "-"
+// @Router /accounting/transfer [post]
 func Transfer(c *gin.Context) {
 	userId := int64(c.MustGet("userID").(float64))
 	var json model.TransferCreditTransaction
@@ -99,6 +112,12 @@ func Transfer(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "ok"})
 }
 
+// @Summary ดูรายการ ประวัติการโอนเครดิตเข้า-ออก
+// @tags accounting
+// @Description ต้อง Login แล้วใช้ token Authorize ก่อนใช้งาน ใช้คำสั่ง curl ในการดึงข้อมูลได้เนื่องจากswaggerไม่รองรับget with body
+// @Security ApiKeyAuth
+// @Param input body model.TransferCreditTransactionList true "-"
+// @Router /accounting/transfer-list [get]
 func TransferList(c *gin.Context) {
 	userId := int64(c.MustGet("userID").(float64))
 	var json model.TransferCreditTransactionList
